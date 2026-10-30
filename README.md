@@ -19,7 +19,7 @@ Migración de la interfaz de la Explorer App hacia una arquitectura basada en co
 
 1. Clonar el repositorio y acceder a la carpeta:
    
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/XavierWrx/explorer-react.git
    cd explorer-react
 
    1. Instalar las Dependencias.
