@@ -3,9 +3,10 @@ import { formatPopulation } from '../utils/format'
 
 interface CountryCardProps {
   country: Country
+  onSelect: (code: string) => void
 }
 
-function CountryCard({ country }: CountryCardProps) {
+function CountryCard({ country, onSelect }: CountryCardProps) {
   const countryName =
     country.names?.translations?.spa?.common || country.names?.common
   const flag =
@@ -36,13 +37,15 @@ function CountryCard({ country }: CountryCardProps) {
             <dd>{country.capitals?.[0]?.name || 'Sin capital registrada'}</dd>
           </div>
         </dl>
-        <a
-          href={`https://es.wikipedia.org/w/index.php?search=${encodeURIComponent(countryName)}`}
-          aria-label={`Buscar ${countryName} en Wikipedia`}
+        <button
+          type="button"
+          onClick={() =>
+            onSelect(country.codes?.alpha_2 || country.names.common)
+          }
           className="inline-flex rounded-md font-medium text-blue-700 underline-offset-4 hover:text-blue-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:text-blue-300 dark:hover:text-blue-200 dark:focus-visible:outline-blue-300"
         >
-          Explorar país
-        </a>
+          Más información
+        </button>
       </div>
     </article>
   )
