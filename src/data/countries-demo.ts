@@ -3,7 +3,7 @@ import type { Country } from '../types/country'
 const paisUno: Country = {
   names: {
     common: 'El Salvador',
-    official: 'República de El Salvador',
+    official: 'Republic of El Salvador',
     translations: { spa: { common: 'El Salvador' } },
   },
   capitals: [{ name: 'San Salvador' }],
@@ -13,67 +13,65 @@ const paisUno: Country = {
     description: 'Bandera de El Salvador',
   },
   population: 6364943,
-  region: 'América',
-  subregion: 'América Central',
+  region: 'Americas', // Cambiado a 'Americas' en inglés para el filtro
+  subregion: 'Central America',
   tlds: ['.sv'],
   borders: ['GTM', 'HND'],
   area: { kilometers: 21041, miles: 8124 },
   coordinates: { lat: 13.8333, lng: -88.9167 },
-  languages: [{ code: 'spa', name: 'Español', native_name: 'Español' }],
-  currencies: [{ code: 'USD', name: 'Dólar estadounidense', symbol: '$' }],
+  languages: [{ code: 'spa', name: 'Spanish', native_name: 'Español' }],
+  currencies: [{ code: 'USD', name: 'United States dollar', symbol: '$' }],
 }
 
 const paisDos: Country = {
   names: {
-    common: 'Guatemala',
-    official: 'República de Guatemala',
-    translations: { spa: { common: 'Guatemala' } },
+    common: 'Japan', // Nombre en inglés como pide la guía
+    official: 'Japan',
+    translations: { spa: { common: 'Japón' } },
   },
-  capitals: [{ name: 'Ciudad de Guatemala' }],
-  codes: { alpha_2: 'GT', alpha_3: 'GTM' },
+  capitals: [{ name: 'Tokyo' }],
+  codes: { alpha_2: 'JP', alpha_3: 'JPN' },
   flag: {
-    url_svg: 'https://flagcdn.com/gt.svg',
-    description: 'Bandera de Guatemala',
+    url_svg: 'https://flagcdn.com/jp.svg',
+    description: 'Bandera de Japón',
   },
-  population: 16858333,
-  region: 'América',
-  subregion: 'América Central',
-  tlds: ['.gt'],
-  borders: ['BLZ', 'SLV', 'HND', 'MEX'],
-  area: { kilometers: 108889, miles: 42042 },
-  coordinates: { lat: 15.5, lng: -90.25 },
-  languages: [{ code: 'spa', name: 'Español', native_name: 'Español' }],
-  currencies: [{ code: 'GTQ', name: 'Quetzal guatemalteco', symbol: 'Q' }],
+  population: 125836021,
+  region: 'Asia', // Región Asia para la prueba del filtro
+  subregion: 'Eastern Asia',
+  tlds: ['.jp'],
+  borders: [],
+  area: { kilometers: 377930, miles: 145920 },
+  coordinates: { lat: 36.0, lng: 138.0 },
+  languages: [{ code: 'jpn', name: 'Japanese', native_name: '日本語' }],
+  currencies: [{ code: 'JPY', name: 'Japanese yen', symbol: '¥' }],
 }
 
 const paisTres: Country = {
   names: {
-    common: 'Honduras',
-    official: 'República de Honduras',
-    translations: { spa: { common: 'Honduras' } },
+    common: 'Canada', // Nombre en inglés para buscar "can"
+    official: 'Canada',
+    translations: { spa: { common: 'Canadá' } },
   },
-  capitals: [{ name: 'Tegucigalpa' }],
-  codes: { alpha_2: 'HN', alpha_3: 'HND' },
+  capitals: [{ name: 'Ottawa' }],
+  codes: { alpha_2: 'CA', alpha_3: 'CAN' },
   flag: {
-    url_svg: 'https://flagcdn.com/hn.svg',
-    description: 'Bandera de Honduras',
+    url_svg: 'https://flagcdn.com/ca.svg',
+    description: 'Bandera de Canadá',
   },
-  population: 9904608,
-  region: 'América',
-  subregion: 'América Central',
-  tlds: ['.hn'],
-  borders: ['GTM', 'SLV', 'NIC'],
-  area: { kilometers: 112492, miles: 43433 },
-  coordinates: { lat: 15.0, lng: -86.5 },
-  languages: [{ code: 'spa', name: 'Español', native_name: 'Español' }],
-  currencies: [{ code: 'HNL', name: 'Lempira hondureño', symbol: 'L' }],
+  population: 38005238,
+  region: 'Americas', // Cambiado a 'Americas' en inglés
+  subregion: 'North America',
+  tlds: ['.ca'],
+  borders: ['USA'],
+  area: { kilometers: 9984670, miles: 3855100 },
+  coordinates: { lat: 60.0, lng: -95.0 },
+  languages: [{ code: 'eng', name: 'English', native_name: 'English' }],
+  currencies: [{ code: 'CAD', name: 'Canadian dollar', symbol: '$' }],
 }
-
-export const mockCountries: Country[] = [paisUno, paisDos, paisTres]
 
 // countries-demo.ts — arreglo temporal para comprobar los componentes.
 export const countriesDemo: Country[] = [
-  paisUno, // Cambia estos nombres si tus variables se llaman elSalvador, japon, canada, etc.
+  paisUno, 
   paisDos,
   paisTres
 ];

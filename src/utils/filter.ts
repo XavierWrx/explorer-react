@@ -1,56 +1,52 @@
-import type { Country } from "../types/country";
-
-// ======================================================
-// FILTRAR PAÍSES POR NOMBRE Y REGIÓN
-// ======================================================
+import type { Country } from '../types/country'
 
 export function filterCountries(
-    countries: Country[],
-    query: string,
-    region: string,
+  countries: Country[],
+  query: string,
+  region: string,
 ): Country[] {
+  const normalize = (value: string): string =>
+    value
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
 
-    const normalize = (value: string): string =>
-        value
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .trim();
+  const normalizeRegion = (value: string | null | undefined): string => {
+    const normalized = normalize(value ?? '')
+    const regionAliases: Record<string, string> = {
+      africa: 'africa',
+      americas: 'americas',
+      america: 'americas',
+      asia: 'asia',
+      europe: 'europe',
+      europa: 'europe',
+      oceania: 'oceania',
+    }
 
-    const normalizeQuery: string = normalize(query);
+    return regionAliases[normalized] ?? normalized
+  }
 
-    return countries.filter(
-        (country: Country): boolean => {
+  const normalizedQuery = normalize(query)
+  const normalizedSelectedRegion = normalizeRegion(region)
 
-            const countryNames: string[] = [
-                country.names.common,
+  return countries.filter((country) => {
+    const countryNames = [
+      country.names.common,
+      country.names.official ?? '',
+      country.names.translations?.spa?.common ?? '',
+      country.names.translations?.spa?.official ?? '',
+    ]
 
-                country.names.official ?? "",
+    const matchesQuery =
+      normalizedQuery === '' ||
+      countryNames.some((name) => normalize(name).includes(normalizedQuery)) ||
+      normalizeRegion(country.region).includes(normalizedQuery)
 
-                country.names.translations?.spa?.common ?? "",
+    const matchesSelectedRegion =
+      normalizedSelectedRegion === '' ||
+      normalizeRegion(country.region) === normalizedSelectedRegion
 
-                country.names.translations?.spa?.official ?? "",
-            ]
-                .map(
-                    (name: string): string =>
-                    normalize(name),
-                );
-
-            const matchesName: boolean =
-                countryNames.some(
-                    (name: string): boolean =>
-                        name.includes(
-                            normalizeQuery,
-                        ),
-                );
-
-            const matchesSelectedRegion: boolean =
-                region === "" ||
-                country.region === region;
-
-            return (
-                matchesName && matchesSelectedRegion
-            );
-        },
-    );
+    return matchesQuery && matchesSelectedRegion
+  })
 }
