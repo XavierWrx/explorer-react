@@ -1,12 +1,12 @@
-import type { Country } from '../types/country'
-import CountryCard from './CountryCard'
+import type { Country } from '../../types/country'
+import { CountryCard } from '../molecules/CountryCard'
 
 interface CountryGridProps {
   countries: Country[]
   onSelect: (code: string) => void
 }
 
-function CountryGrid({ countries, onSelect }: CountryGridProps) {
+export function CountryGrid({ countries, onSelect }: CountryGridProps) {
   return (
     <section
       id="paises"

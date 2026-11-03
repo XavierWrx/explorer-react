@@ -47,3 +47,14 @@ funcional que devuelve JSX estructurado.
 
 4. ¿Qué comprobaste con los tres países y qué pendiente debes resolver?
    Al pasar los tres países estáticos locales (paisUno, paisDos, paisTres) como props en App.tsx, comprobé exitosamente la reutilización del componente <CountryCard/>. Verifiqué que cada tarjeta renderiza la información única de cada país conservando el mismo diseño responsivo y el modo oscuro automático.
+
+## Estado de Migración (S26)
+| Elemento | Estado al terminar esta guía |
+| :--- | :--- |
+| Tipos, utilidades y recursos copiados | Reutilizados; revisar sus contratos cuando conectes la fuente completa. |
+| Tarjeta, bandera y región | Organizadas como componentes. |
+| Listado de países | Preparado para recibir cualquier Country[]; comprobado con datos temporales. |
+| Cabecera, menú móvil y pie propios | Revisar y adaptar según el diseño anterior. |
+| Búsqueda, región y debounce | Pendientes de conectar al estado y a formularios. |
+| Catálogo, carga, error y reintento | Pendientes de conectar mediante efectos de React. |
+| Detalle y navegación | Pendientes de integrar con el enrutamiento. |
