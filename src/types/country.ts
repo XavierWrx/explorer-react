@@ -21,7 +21,7 @@ export interface CountryCodes {
 }
 
 export interface CountryFlag {
-    url_svg?: string | null;
+    url_svg?: string;
     url_png?: string | null;
     description?: string | null;
 }

@@ -1,6 +1,6 @@
 import type { Country } from '../types/country'
 
-export const paisUno: Country = {
+const paisUno: Country = {
   names: {
     common: 'El Salvador',
     official: 'República de El Salvador',
@@ -23,7 +23,7 @@ export const paisUno: Country = {
   currencies: [{ code: 'USD', name: 'Dólar estadounidense', symbol: '$' }],
 }
 
-export const paisDos: Country = {
+const paisDos: Country = {
   names: {
     common: 'Guatemala',
     official: 'República de Guatemala',
@@ -46,7 +46,7 @@ export const paisDos: Country = {
   currencies: [{ code: 'GTQ', name: 'Quetzal guatemalteco', symbol: 'Q' }],
 }
 
-export const paisTres: Country = {
+const paisTres: Country = {
   names: {
     common: 'Honduras',
     official: 'República de Honduras',
@@ -68,3 +68,12 @@ export const paisTres: Country = {
   languages: [{ code: 'spa', name: 'Español', native_name: 'Español' }],
   currencies: [{ code: 'HNL', name: 'Lempira hondureño', symbol: 'L' }],
 }
+
+export const mockCountries: Country[] = [paisUno, paisDos, paisTres]
+
+// countries-demo.ts — arreglo temporal para comprobar los componentes.
+export const countriesDemo: Country[] = [
+  paisUno, // Cambia estos nombres si tus variables se llaman elSalvador, japon, canada, etc.
+  paisDos,
+  paisTres
+];
