@@ -44,9 +44,23 @@ export function filterCountries(
                         ),
                 );
 
+            const normalizeRegion = (value: string | null | undefined): string => {
+                const normalized = normalize(value ?? "");
+                const regionAliases: Record<string, string> = {
+                    africa: "africa",
+                    americas: "americas",
+                    america: "americas",
+                    asia: "asia",
+                    europe: "europe",
+                    europa: "europe",
+                    oceania: "oceania",
+                };
+                return regionAliases[normalized] ?? normalized;
+            };
+
             const matchesSelectedRegion: boolean =
                 region === "" ||
-                country.region === region;
+                normalizeRegion(country.region) === normalizeRegion(region);
 
             return (
                 matchesName && matchesSelectedRegion

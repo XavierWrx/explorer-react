@@ -1,64 +1,80 @@
-// CountryCard.tsx — compone la tarjeta y comunica una selección.
-import type { JSX } from 'react'
-import type { Country } from '../../types/country'
-import {
-  formatPopulation,
-  getCapital,
-  getFlagDescription,
-} from '../../utils/format'
-import { Badge } from '../atoms/Badge'
-import { Flag } from '../atoms/Flag'
+import type { JSX } from "react";
+import type { Country } from "../../types/country";
+
+import poblacionIcon from "../../assets/Poblacion.svg";
+import regionIcon from "../../assets/Region.svg";
+import capitalIcon from "../../assets/Capital.svg";
+import placeholderIcon from "../../assets/Mosaico.svg";
 
 interface CountryCardProps {
-  country: Country
-  onSelect: (code: string) => void
+  country: Country;
+  onSelect: (code: string) => void;
 }
 
-export function CountryCard({
-  country,
-  onSelect,
-}: CountryCardProps): JSX.Element {
-  const capital: string = getCapital(country)
-  const flagDescription: string = getFlagDescription(country)
-  const formattedPopulation: string = formatPopulation(country.population)
-  const region: string = country.region ?? 'Sin información'
+export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Element {
+  const name = country.names?.common || "Desconocido";
+  const code = country.codes?.alpha_2 || "N/A";
+  const flagUrl = country.flag?.url_svg || placeholderIcon;
+  const flagDesc = country.flag?.description || `Bandera de ${name}`;
+
+  const safePopulation = country.population || 0;
+  const populationText = safePopulation > 1000000 
+    ? (safePopulation / 1000000).toFixed(1) + " millones"
+    : safePopulation.toLocaleString();
+
+  const region = country.region || "No definida";
+  const capital = country.capitals?.[0]?.name || "N/A";
 
   return (
-    <article className="@container group flex w-full flex-col overflow-hidden rounded-lg bg-neutral-0 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl focus-within:ring-2 focus-within:ring-orange-500 focus-within:ring-offset-2">
-      <div className="flex flex-row @min-[20rem]:flex-col">
-        <Flag alt={flagDescription} src={country.flag?.url_svg ?? ''} />
-        <div className="flex min-w-0 flex-1 flex-col p-5 @min-[20rem]:w-3/5">
-          <h2 className="text-(length:--font-country-name) font-bold text-neutral-900 dark:text-white">
-            {country.names.common}
-          </h2>
-          <dl className="mt-4 space-y-3 text-base text-neutral-900 dark:text-slate-200">
-            <div className="grid grid-cols-[84px_1fr] gap-3">
-              <dt className="font-semibold">Población:</dt>
-              <dd>{formattedPopulation}</dd>
-            </div>
-            <div className="grid grid-cols-[84px_1fr] gap-3">
-              <dt className="font-semibold">Región:</dt>
-              <dd>
-                <Badge region={region} />
-              </dd>
-            </div>
-            <div className="grid grid-cols-[84px_1fr] gap-3">
-              <dt className="font-semibold">Capital:</dt>
-              <dd>{capital}</dd>
-            </div>
-          </dl>
-          <button
-            type="button"
-            className="mt-6 flex min-h-11 w-full items-center justify-center rounded-full bg-orange-500 px-5 py-2 text-lg font-medium text-neutral-900 transition-all duration-200 hover:bg-orange-600 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 sm:w-32"
-            aria-label={`Ver más información de ${country.names.common}`}
-            onClick={() =>
-              onSelect(country.codes?.alpha_2 ?? country.names.common)
-            }
-          >
-            Ver más
-          </button>
-        </div>
+    <article className="bg-surface-background rounded-rd-sm border-2 border-brand-accent p-6 shadow-sm flex flex-col justify-between w-full h-full hover:shadow-md transition-shadow">
+      
+      <h2 className="font-roboto font-black text-center text-lg md:text-xl text-surface-icon-color uppercase mb-4 tracking-wide">
+        {name}
+      </h2>
+
+      {/* min-h-[160px] evita el colapso de la bandera */}
+      <div className="w-full h-40 min-h-[160px] rounded-rd-sm overflow-hidden flex items-center justify-center bg-surface-color-background border border-brand-primary p-2 mb-6">
+        <img 
+          src={flagUrl} 
+          alt={flagDesc} 
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = placeholderIcon;
+          }}
+        />
       </div>
+
+      <ul className="space-y-4 font-roboto text-sm text-texto-secondary mb-6 flex-1">
+        <li className="flex items-center justify-between border-b border-brand-primary pb-2 gap-2">
+          <span className="flex items-center gap-2 font-bold text-surface-icon-color">
+            <img src={poblacionIcon} alt="" className="w-5 h-5 object-contain" />
+            Población:
+          </span>
+          <span className="font-semibold text-right">{populationText}</span>
+        </li>
+        <li className="flex items-center justify-between border-b border-brand-primary pb-2 gap-2">
+          <span className="flex items-center gap-2 font-bold text-surface-icon-color">
+            <img src={regionIcon} alt="" className="w-5 h-5 object-contain" />
+            Región:
+          </span>
+          <span className="font-semibold text-right truncate" title={region}>{region}</span>
+        </li>
+        <li className="flex items-center justify-between border-b border-brand-primary pb-2 gap-2">
+          <span className="flex items-center gap-2 font-bold text-surface-icon-color">
+            <img src={capitalIcon} alt="" className="w-5 h-5 object-contain" />
+            Capítal:
+          </span>
+          <span className="font-semibold text-right truncate" title={capital}>{capital}</span>
+        </li>
+      </ul>
+
+      <button
+        onClick={() => onSelect(code)}
+        className="w-full bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold h-11 px-4 rounded-rd-sm text-xs transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-secondary cursor-pointer uppercase mt-auto"
+      >
+        Más información
+      </button>
+
     </article>
-  )
+  );
 }

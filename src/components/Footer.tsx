@@ -1,3 +1,4 @@
+
 function Footer() {
   return (
     <footer className="bg-slate-900 px-4 py-6 text-slate-200 dark:bg-slate-900 sm:px-6 lg:px-8">
