@@ -1,1 +1,69 @@
 @import "tailwindcss";
+
+@theme {
+  /* Colores de Marca y Superficies */
+  --color-brand-accent: #fbbf24;
+  --color-brand-primary: #f8f9fa;
+  --color-brand-secondary: #1e3a8a;
+
+  --color-brand-button-border-gold: #fbbf24;
+  --color-brand-button-default: #fcbb13;
+  --color-brand-button-estado-desabilitado: #c0c4ca;
+  --color-brand-button-estado-desabilitado-marcado: #ffd873;
+  --color-brand-button-hover: #ffb800;
+  --color-brand-button-background: #fbbf24;
+
+  --color-surface-background: #ffffff;
+  --color-surface-color-background: #f8f9fa;
+  --color-surface-icon-color: #000000;
+
+  /* Colores de Texto  */
+  --color-texto-invert: #ffffff;
+  --color-texto-primary: #ffee00;
+  --color-texto-secondary: #475569;
+
+  /* Radios de Borde */
+  --radius-rd-full: 999px;
+  --radius-rd-sm: 8px;
+  --radius-rd-lg: 20px;
+  --radius-rd-md: 12px;
+
+  /* Animaciones */
+  --animate-fade-in: fade-in 500ms ease-out both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Espaciados */
+  --spacing-ex-lg: 24px;
+  --spacing-ex-md: 20px;
+  --spacing-lg: 16px;
+  --spacing-md: 12px;
+  --spacing-sm: 8px;
+  --spacing-xs: 4px;
+}
+
+/* Variables globales root */
+:root {
+  --font-country-name: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --font-page-title: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+  }
+}
+
+/* Configuraciones base del body basadas en Vanilla */
+body {
+  @apply bg-surface-color-background font-sans text-texto-secondary min-h-screen flex flex-col justify-between;
+}
