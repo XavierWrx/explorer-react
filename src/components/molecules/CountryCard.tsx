@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { Link } from "react-router-dom";
 import type { Country } from "../../types/country";
 
 import poblacionIcon from "../../assets/Poblacion.svg";
@@ -68,12 +69,13 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
         </li>
       </ul>
 
-      <button
+      <Link
+        to={`/country/${encodeURIComponent(code)}`}
         onClick={() => onSelect(code)}
-        className="w-full bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold h-11 px-4 rounded-rd-sm text-xs transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-secondary cursor-pointer uppercase mt-auto"
+        className="w-full bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold h-11 px-4 rounded-rd-sm text-xs transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary cursor-pointer uppercase mt-auto flex items-center justify-center"
       >
         Más información
-      </button>
+      </Link>
 
     </article>
   );
