@@ -1,5 +1,4 @@
 import { useState, type JSX, type ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { SearchBar } from "../molecules/SearchBar";
 import { RegionFilter } from "../molecules/RegionFilter";
 
@@ -22,9 +21,9 @@ export function Header({ title, children, query, onSearch, region, onRegionChang
           <span className="font-roboto font-black text-sm md:text-base tracking-wide uppercase">
             Scan. Guess. Master the world.
           </span>
-          <Link to="/" className="flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">
+          <a href="/" className="flex items-center justify-center">
             <img src="/src/assets/Mosaico.svg" alt="Explorer App Logo" className="w-9 h-9 object-contain" />
-          </Link>
+          </a>
           
           <div className="flex items-center gap-3">
             <button
@@ -41,14 +40,14 @@ export function Header({ title, children, query, onSearch, region, onRegionChang
               id="primary-navigation"
               className={`${isMenuOpen ? "flex" : "hidden"} md:flex flex-col md:flex-row items-center gap-6 text-sm font-medium`}
             >
-              <Link to="/" aria-current="page" className="flex items-center gap-2 px-3 py-1.5 rounded-rd-sm border-b-2 border-brand-accent text-brand-accent font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">
+              <a href="/" aria-current="page" className="flex items-center gap-2 px-3 py-1.5 rounded-rd-sm border-b-2 border-brand-accent text-brand-accent font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">
                 <img src="/src/assets/home.svg" alt="" className="w-5 h-5" />
                 <span>Inicio</span>
-              </Link>
-              <Link to="/" className="flex items-center gap-2 px-3 py-1.5 rounded-rd-sm hover:text-brand-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">
+              </a>
+              <a href="#" className="flex items-center gap-2 px-3 py-1.5 rounded-rd-sm hover:text-brand-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">
                 <img src="/src/assets/Mosaico.svg" alt="" className="w-5 h-5" />
                 <span>Mosaico</span>
-              </Link>
+              </a>
             </nav>
           </div>
         </div>

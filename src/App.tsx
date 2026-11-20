@@ -1,33 +1,86 @@
-import { useState, type JSX } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import type { Country } from './types/country';
-import { filterCountries } from './utils/filter';
-import { countriesDemo } from './data/countries-demo';
+import type { JSX } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Header } from './components/organisms/Header';
 import { CountryGrid } from './components/organisms/CountryGrid';
 import { Footer } from './components/organisms/Footer';
+import { useCountries } from './hooks/useCountries';
+import { useSearch } from './hooks/useSearch';
 import { CountryDetailPage } from './pages/CountryDetailPage';
 
-export function App(): JSX.Element {
-  // 1. Declaración de estados locales
-  const [query, setQuery] = useState<string>('');
-  const [region, setRegion] = useState<string>('');
-
-  // 2. Resultado derivado: recalcula los países en cada render sin usar otro useState
-  const filteredCountries: Country[] = filterCountries(
-    countriesDemo,
-    query,
-    region
+export function LoadingState(): JSX.Element {
+  return (
+    <div className="text-center py-12" role="status">
+      <p className="font-roboto text-lg text-surface-icon-color">
+        Cargando países...
+      </p>
+    </div>
   );
+}
 
-  const handleSelect = (code: string) => {
-    void code;
+export function ErrorState({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry: () => void;
+}): JSX.Element {
+  return (
+    <div className="text-center py-12">
+      <p className="font-roboto text-lg mb-4 text-surface-icon-color">
+        {message}
+      </p>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold px-6 py-2 rounded-rd-sm transition-all shadow-sm cursor-pointer"
+      >
+        Reintentar
+      </button>
+    </div>
+  );
+}
+
+export function EmptyState({
+  onClearFilters,
+}: {
+  onClearFilters: () => void;
+}): JSX.Element {
+  return (
+    <div className="text-center py-12">
+      <p className="font-roboto text-lg mb-4 text-surface-icon-color">
+        No se encontraron países que coincidan con tu búsqueda.
+      </p>
+      <button
+        type="button"
+        onClick={onClearFilters}
+        className="bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold px-6 py-2 rounded-rd-sm transition-all shadow-sm cursor-pointer"
+      >
+        Limpiar filtros
+      </button>
+    </div>
+  );
+}
+
+export function App(): JSX.Element {
+  const navigate = useNavigate();
+  const { state, retry } = useCountries();
+  const countries = state.status === 'success' ? state.data : [];
+  const {
+    query,
+    setQuery,
+    region,
+    setRegion,
+    visibleCountries,
+    clearFilters,
+  } = useSearch(countries);
+
+  const handleSelect = (code: string): void => {
+    navigate(`/country/${encodeURIComponent(code)}`);
   };
 
   return (
     <main className="min-h-screen bg-surface-color-background text-texto-secondary flex flex-col justify-between">
       <div className="mx-auto max-w-7xl w-full px-4 py-8 flex-1">
-        
         <Routes>
           <Route
             path="/"
@@ -42,39 +95,35 @@ export function App(): JSX.Element {
                 >
                   <p>Aprende lo más importante</p>
                 </Header>
-                <div className="mb-6 font-roboto font-bold text-texto-secondary">
-                  <p>Mostrando {filteredCountries.length} países</p>
-                </div>
-                {filteredCountries.length === 0 ? (
-                  <div className="text-center py-12">
-                    <p className="font-roboto text-lg mb-4 text-surface-icon-color">
-                      No se encontraron países que coincidan con tu búsqueda.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setQuery('');
-                        setRegion('');
-                      }}
-                      className="bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold px-6 py-2 rounded-rd-sm transition-all shadow-sm cursor-pointer"
-                    >
-                      Limpiar filtros
-                    </button>
-                  </div>
-                ) : (
-                  <CountryGrid countries={filteredCountries} onSelect={handleSelect} />
+                {state.status === 'loading' && <LoadingState />}
+                {state.status === 'error' && (
+                  <ErrorState message={state.message} onRetry={retry} />
+                )}
+                {state.status === 'success' && (
+                  <>
+                    <div className="mb-6 font-roboto font-bold text-texto-secondary">
+                      <p>Mostrando {visibleCountries.length} países</p>
+                    </div>
+                    {visibleCountries.length === 0 ? (
+                      <EmptyState onClearFilters={clearFilters} />
+                    ) : (
+                      <CountryGrid
+                        countries={visibleCountries}
+                        onSelect={handleSelect}
+                      />
+                    )}
+                  </>
                 )}
               </>
             }
           />
           <Route path="/country/:code" element={<CountryDetailPage />} />
+          <Route path="/pais/:code" element={<CountryDetailPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        
       </div>
       <Footer />
     </main>
   );
 }
-//Final
 export default App;
