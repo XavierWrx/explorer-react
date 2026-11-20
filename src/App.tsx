@@ -1,9 +1,11 @@
 import type { JSX } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Header } from './components/organisms/Header';
 import { CountryGrid } from './components/organisms/CountryGrid';
 import { Footer } from './components/organisms/Footer';
 import { useCountries } from './hooks/useCountries';
 import { useSearch } from './hooks/useSearch';
+import { CountryDetailPage } from './pages/CountryDetailPage';
 
 export function LoadingState(): JSX.Element {
   return (
@@ -60,6 +62,7 @@ export function EmptyState({
 }
 
 export function App(): JSX.Element {
+  const navigate = useNavigate();
   const { state, retry } = useCountries();
   const countries = state.status === 'success' ? state.data : [];
   const {
@@ -72,41 +75,52 @@ export function App(): JSX.Element {
   } = useSearch(countries);
 
   const handleSelect = (code: string): void => {
-    console.log('Código del país seleccionado:', code);
+    navigate(`/country/${encodeURIComponent(code)}`);
   };
 
   return (
     <main className="min-h-screen bg-surface-color-background text-texto-secondary flex flex-col justify-between">
       <div className="mx-auto max-w-7xl w-full px-4 py-8 flex-1">
-        <Header
-          title="EXPLORAR PAÍSES DEL MUNDO"
-          query={query}
-          onSearch={setQuery}
-          region={region}
-          onRegionChange={setRegion}
-        >
-          <p>Aprende lo más importante</p>
-        </Header>
-        {state.status === 'loading' && <LoadingState />}
-        {state.status === 'error' && (
-          <ErrorState message={state.message} onRetry={retry} />
-        )}
-        {state.status === 'success' && (
-          <>
-            <div className="mb-6 font-roboto font-bold text-texto-secondary">
-              <p>Mostrando {visibleCountries.length} países</p>
-            </div>
-            {visibleCountries.length === 0 ? (
-              <EmptyState onClearFilters={clearFilters} />
-            ) : (
-              <CountryGrid
-                countries={visibleCountries}
-                onSelect={handleSelect}
-              />
-            )}
-          </>
-        )}
-        
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Header
+                  title="EXPLORAR PAÍSES DEL MUNDO"
+                  query={query}
+                  onSearch={setQuery}
+                  region={region}
+                  onRegionChange={setRegion}
+                >
+                  <p>Aprende lo más importante</p>
+                </Header>
+                {state.status === 'loading' && <LoadingState />}
+                {state.status === 'error' && (
+                  <ErrorState message={state.message} onRetry={retry} />
+                )}
+                {state.status === 'success' && (
+                  <>
+                    <div className="mb-6 font-roboto font-bold text-texto-secondary">
+                      <p>Mostrando {visibleCountries.length} países</p>
+                    </div>
+                    {visibleCountries.length === 0 ? (
+                      <EmptyState onClearFilters={clearFilters} />
+                    ) : (
+                      <CountryGrid
+                        countries={visibleCountries}
+                        onSelect={handleSelect}
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            }
+          />
+          <Route path="/country/:code" element={<CountryDetailPage />} />
+          <Route path="/pais/:code" element={<CountryDetailPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
       <Footer />
     </main>
