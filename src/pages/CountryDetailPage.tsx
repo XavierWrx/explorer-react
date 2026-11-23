@@ -16,6 +16,9 @@ import idiomaIcon from '../assets/Idioma.svg';
 import areaIcon from '../assets/Area.svg';
 import coordenadasIcon from '../assets/Coordenadas.svg';
 import monedaIcon from '../assets/Moneda.svg';
+// [FEATURE: FAVORITES] START
+import { FavoriteButton } from '../components/atoms/FavoriteButton';
+// [FEATURE: FAVORITES] END
 
 interface CountryRouteParams {
   code: string;
@@ -207,12 +210,23 @@ export function CountryDetailPage(): JSX.Element {
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <Link
-        to="/"
-        className="inline-flex min-h-11 items-center justify-center rounded-full bg-orange-500 px-8 py-2 font-roboto font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
-      >
-        ← Atrás
-      </Link>
+      {/* [FEATURE: FAVORITES] START */}
+      <div className="flex items-center justify-between">
+      {/* [FEATURE: FAVORITES] END */}
+        <Link
+          to="/"
+          className="inline-flex min-h-11 items-center justify-center rounded-full bg-orange-500 px-8 py-2 font-roboto font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+        >
+          ← Atrás
+        </Link>
+        {/* [FEATURE: FAVORITES] START */}
+        {state.status === 'success' && (
+          <FavoriteButton code={code ?? ''} variant="button" />
+        )}
+      {/* [FEATURE: FAVORITES] END */}
+      {/* [FEATURE: FAVORITES] START */}
+      </div>
+      {/* [FEATURE: FAVORITES] END */}
 
       {state.status === 'loading' && (
         <p role="status" className="mt-12 font-roboto">

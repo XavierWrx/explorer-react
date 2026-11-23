@@ -6,6 +6,9 @@ import poblacionIcon from "../../assets/Poblacion.svg";
 import regionIcon from "../../assets/Region.svg";
 import capitalIcon from "../../assets/Capital.svg";
 import placeholderIcon from "../../assets/Mosaico.svg";
+// [FEATURE: FAVORITES] START
+import { FavoriteButton } from '../atoms/FavoriteButton';
+// [FEATURE: FAVORITES] END
 
 interface CountryCardProps {
   country: Country;
@@ -28,6 +31,11 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
 
   return (
     <article className="bg-surface-background rounded-rd-sm border-2 border-brand-accent p-6 shadow-sm flex flex-col justify-between w-full h-full hover:shadow-md transition-shadow">
+      {/* [FEATURE: FAVORITES] START */}
+      <div className="flex justify-end -mb-8">
+        <FavoriteButton code={code} variant="icon" />
+      </div>
+      {/* [FEATURE: FAVORITES] END */}
       
       <h2 className="font-roboto font-black text-center text-lg md:text-xl text-surface-icon-color uppercase mb-4 tracking-wide">
         {name}
@@ -75,7 +83,6 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
       >
         Más información
       </Link>
-
     </article>
   );
 }
