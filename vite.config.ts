@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiKey = env.VITE_REST_COUNTRIES_API_KEY?.trim()
+  const accessToken = env.REST_COUNTRIES_TOKEN?.trim()
 
   return {
     plugins: [react(), tailwindcss()],
@@ -21,8 +21,8 @@ export default defineConfig(({ mode }) => {
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyRequest) => {
               proxyRequest.removeHeader('origin')
-              if (apiKey) {
-                proxyRequest.setHeader('Authorization', `Bearer ${apiKey}`)
+              if (accessToken) {
+                proxyRequest.setHeader('Authorization', `Bearer ${accessToken}`)
               }
             })
           },

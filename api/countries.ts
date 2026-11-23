@@ -25,8 +25,8 @@ export default async function handler(
     return;
   }
 
-  const apiKey = process.env.VITE_REST_COUNTRIES_API_KEY?.trim();
-  if (!apiKey) {
+  const accessToken = process.env.REST_COUNTRIES_TOKEN?.trim();
+  if (!accessToken) {
     response.status(500).json({
       errors: [
         {
@@ -53,7 +53,7 @@ export default async function handler(
   try {
     const apiResponse = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const contentType = apiResponse.headers.get('content-type');

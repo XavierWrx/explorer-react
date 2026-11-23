@@ -23,7 +23,7 @@ cd explorer-react
 pnpm install
 ```
 
-Configura `VITE_REST_COUNTRIES_API_KEY` en el archivo `.env` local. El cliente
+Configura `REST_COUNTRIES_TOKEN` en el archivo `.env` local. El cliente
 usa `/api/countries`: Vite lo reenvía a REST Countries durante el desarrollo y
 la función serverless de Vercel lo hace en producción. La clave permanece en
 el servidor y no se envía desde el navegador. Configura la misma variable en
