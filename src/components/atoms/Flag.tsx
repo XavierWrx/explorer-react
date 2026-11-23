@@ -1,4 +1,3 @@
-// Flag.tsx — muestra la bandera y conserva la imagen de respaldo.
 import type { JSX, SyntheticEvent } from "react";
 
 interface FlagProps {
@@ -10,7 +9,6 @@ function handleFlagError(event: SyntheticEvent<HTMLImageElement>): void {
   const image: HTMLImageElement = event.currentTarget;
   const fallbackUrl: string = `${import.meta.env.BASE_URL}placeholder.png`;
 
-  // Evita volver a asignar el respaldo si este también falla.
   if (image.src === new URL(fallbackUrl, window.location.href).href) return;
   image.src = fallbackUrl;
 }

@@ -9,6 +9,13 @@ import {
   getFlagDescription,
   getRegionName,
 } from '../utils/format';
+import poblacionIcon from '../assets/Poblacion.svg';
+import capitalIcon from '../assets/Capital.svg';
+import regionIcon from '../assets/Region.svg';
+import idiomaIcon from '../assets/Idioma.svg';
+import areaIcon from '../assets/Area.svg';
+import coordenadasIcon from '../assets/Coordenadas.svg';
+import monedaIcon from '../assets/Moneda.svg';
 
 interface CountryRouteParams {
   code: string;
@@ -16,6 +23,33 @@ interface CountryRouteParams {
 
 interface CountryDetailContentProps {
   country: CountryDetail;
+}
+
+interface CountryInfoRowProps {
+  icon: string;
+  label: string;
+  value: string;
+  iconAlt?: string;
+}
+
+function CountryInfoRow({
+  icon,
+  label,
+  value,
+  iconAlt = '',
+}: CountryInfoRowProps): JSX.Element {
+  return (
+    <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] items-center gap-2 py-2 sm:grid-cols-[40px_120px_minmax(0,1fr)]">
+      <img
+        src={icon}
+        alt={iconAlt}
+        className="h-6 w-6 object-contain"
+        aria-hidden={iconAlt ? undefined : true}
+      />
+      <dt className="font-bold text-surface-icon-color">{label}</dt>
+      <dd className="min-w-0 wrap-break-word">{value}</dd>
+    </div>
+  );
 }
 
 function CountryDetailContent({
@@ -44,6 +78,17 @@ function CountryDetailContent({
 
   const borders: string[] = country.borders ?? [];
 
+  const area: string =
+    typeof country.area?.kilometers === 'number'
+      ? `${country.area.kilometers.toLocaleString('es-ES')} km²`
+      : 'No disponible';
+
+  const coordinates: string =
+    typeof country.coordinates?.lat === 'number' &&
+    typeof country.coordinates?.lng === 'number'
+      ? `${country.coordinates.lat}, ${country.coordinates.lng}`
+      : 'No disponible';
+
   return (
     <article className="mt-8 bg-surface-background rounded-rd-lg border border-brand-primary p-6 md:p-8 shadow-sm">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16">
@@ -60,49 +105,64 @@ function CountryDetailContent({
             {country.names.common}
           </h1>
 
-          <div className="mt-8 grid gap-8 text-sm leading-6 sm:grid-cols-2">
-            <dl className="space-y-2">
-              <div>
-                <dt className="inline font-bold">Nombre nativo: </dt>
-                <dd className="inline wrap-break-word">{nativeName}</dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Población: </dt>
-                <dd className="inline">
-                  {formatPopulation(country.population)}
-                </dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Región: </dt>
-                <dd className="inline">{getRegionName(country.region)}</dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Subregión: </dt>
-                <dd className="inline">
-                  {country.subregion || 'No disponible'}
-                </dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Capital: </dt>
-                <dd className="inline">{getCapital(country)}</dd>
-              </div>
-            </dl>
+          <h2 className="mt-8 text-lg font-black text-surface-icon-color">
+            DATOS GENERALES
+          </h2>
 
-            <dl className="space-y-2">
-              <div>
-                <dt className="inline font-bold">Dominio: </dt>
-                <dd className="inline wrap-break-word">{domains}</dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Moneda: </dt>
-                <dd className="inline">{currencies}</dd>
-              </div>
-              <div>
-                <dt className="inline font-bold">Idiomas: </dt>
-                <dd className="inline">{languages}</dd>
-              </div>
-            </dl>
-          </div>
+          <dl className="mt-2 text-sm leading-6">
+            <CountryInfoRow
+              icon={poblacionIcon}
+              label="Población:"
+              value={formatPopulation(country.population)}
+            />
+            <CountryInfoRow
+              icon={capitalIcon}
+              label="Capital:"
+              value={getCapital(country)}
+            />
+            <CountryInfoRow
+              icon={regionIcon}
+              label="Región:"
+              value={getRegionName(country.region)}
+            />
+            <CountryInfoRow
+              icon={idiomaIcon}
+              label="Idioma:"
+              value={languages}
+            />
+            <CountryInfoRow
+              icon={areaIcon}
+              label="Área:"
+              value={area}
+            />
+            <CountryInfoRow
+              icon={coordenadasIcon}
+              label="Coordenadas:"
+              value={coordinates}
+            />
+            <CountryInfoRow
+              icon={monedaIcon}
+              label="Moneda:"
+              value={currencies}
+            />
+            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
+              <span aria-hidden="true" />
+              <dt className="font-bold text-surface-icon-color">Subregión:</dt>
+              <dd className="wrap-break-word">
+                {country.subregion || 'No disponible'}
+              </dd>
+            </div>
+            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
+              <span aria-hidden="true" />
+              <dt className="font-bold text-surface-icon-color">Nombre nativo:</dt>
+              <dd className="wrap-break-word">{nativeName}</dd>
+            </div>
+            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
+              <span aria-hidden="true" />
+              <dt className="font-bold text-surface-icon-color">Dominio:</dt>
+              <dd className="wrap-break-word">{domains}</dd>
+            </div>
+          </dl>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <h2 className="text-sm font-bold text-surface-icon-color">

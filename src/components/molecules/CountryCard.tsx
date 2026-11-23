@@ -33,7 +33,6 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
         {name}
       </h2>
 
-      {/* min-h-[160px] evita el colapso de la bandera */}
       <div className="w-full h-40 min-h-[160px] rounded-rd-sm overflow-hidden flex items-center justify-center bg-surface-color-background border border-brand-primary p-2 mb-6">
         <img 
           src={flagUrl} 

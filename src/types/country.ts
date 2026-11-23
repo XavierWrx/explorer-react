@@ -1,5 +1,3 @@
-// src/types/country.ts
-
 export interface CountryTranslation {
     common?: string | null;
     official?: string | null;
