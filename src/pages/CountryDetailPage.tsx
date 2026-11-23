@@ -4,6 +4,7 @@ import { useCountryDetail } from '../hooks/useCountryDetail';
 import type { CountryDetail } from '../types/contry-detail';
 import { getCountryRouteCode } from '../utils/country-codes';
 import {
+  formatCountryDetail,
   formatPopulation,
   getCapital,
   getFlagDescription,
@@ -16,9 +17,8 @@ import idiomaIcon from '../assets/Idioma.svg';
 import areaIcon from '../assets/Area.svg';
 import coordenadasIcon from '../assets/Coordenadas.svg';
 import monedaIcon from '../assets/Moneda.svg';
-// [FEATURE: FAVORITES] START
+import placeholderIcon from '../assets/Mosaico.svg';
 import { FavoriteButton } from '../components/atoms/FavoriteButton';
-// [FEATURE: FAVORITES] END
 
 interface CountryRouteParams {
   code: string;
@@ -29,7 +29,7 @@ interface CountryDetailContentProps {
 }
 
 interface CountryInfoRowProps {
-  icon: string;
+  icon?: string;
   label: string;
   value: string;
   iconAlt?: string;
@@ -43,12 +43,16 @@ function CountryInfoRow({
 }: CountryInfoRowProps): JSX.Element {
   return (
     <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] items-center gap-2 py-2 sm:grid-cols-[40px_120px_minmax(0,1fr)]">
-      <img
-        src={icon}
-        alt={iconAlt}
-        className="h-6 w-6 object-contain"
-        aria-hidden={iconAlt ? undefined : true}
-      />
+      {icon ? (
+        <img
+          src={icon}
+          alt={iconAlt}
+          className="h-6 w-6 object-contain"
+          aria-hidden={iconAlt ? undefined : true}
+        />
+      ) : (
+        <span aria-hidden="true" />
+      )}
       <dt className="font-bold text-surface-icon-color">{label}</dt>
       <dd className="min-w-0 wrap-break-word">{value}</dd>
     </div>
@@ -58,46 +62,24 @@ function CountryInfoRow({
 function CountryDetailContent({
   country,
 }: CountryDetailContentProps): JSX.Element {
-  const nativeName: string =
-    Object.values(country.names.native ?? {})
-      .map((name): string => name?.official || name?.common || '')
-      .find((name: string): boolean => name.length > 0) ??
-    country.names.common;
-
-  const domains: string =
-    country.tlds?.filter(Boolean).join(', ') || 'No disponible';
-
-  const currencies: string =
-    country.currencies
-      ?.map((currency): string => currency?.name ?? '')
-      .filter((name: string): boolean => name.length > 0)
-      .join(', ') || 'No disponible';
-
-  const languages: string =
-    country.languages
-      ?.map((language): string => language?.name ?? '')
-      .filter((name: string): boolean => name.length > 0)
-      .join(', ') || 'No disponible';
+  const {
+    nativeName,
+    domains,
+    currencies,
+    languages,
+    subregion,
+    area,
+    coordinates,
+  } = formatCountryDetail(country);
 
   const borders: string[] = country.borders ?? [];
-
-  const area: string =
-    typeof country.area?.kilometers === 'number'
-      ? `${country.area.kilometers.toLocaleString('es-ES')} km²`
-      : 'No disponible';
-
-  const coordinates: string =
-    typeof country.coordinates?.lat === 'number' &&
-    typeof country.coordinates?.lng === 'number'
-      ? `${country.coordinates.lat}, ${country.coordinates.lng}`
-      : 'No disponible';
 
   return (
     <article className="mt-8 bg-surface-background rounded-rd-lg border border-brand-primary p-6 md:p-8 shadow-sm">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16">
         <div className="flex items-center justify-center border border-brand-primary rounded-rd-sm bg-surface-color-background p-4">
           <img
-            src={country.flag?.url_svg ?? '/src/assets/Mosaico.svg'}
+            src={country.flag?.url_svg ?? placeholderIcon}
             alt={getFlagDescription(country)}
             className="aspect-3/2 w-full rounded-lg object-contain"
           />
@@ -112,58 +94,58 @@ function CountryDetailContent({
             DATOS GENERALES
           </h2>
 
-          <dl className="mt-2 text-sm leading-6">
-            <CountryInfoRow
-              icon={poblacionIcon}
-              label="Población:"
-              value={formatPopulation(country.population)}
-            />
-            <CountryInfoRow
-              icon={capitalIcon}
-              label="Capital:"
-              value={getCapital(country)}
-            />
-            <CountryInfoRow
-              icon={regionIcon}
-              label="Región:"
-              value={getRegionName(country.region)}
-            />
-            <CountryInfoRow
-              icon={idiomaIcon}
-              label="Idioma:"
-              value={languages}
-            />
-            <CountryInfoRow
-              icon={areaIcon}
-              label="Área:"
-              value={area}
-            />
-            <CountryInfoRow
-              icon={coordenadasIcon}
-              label="Coordenadas:"
-              value={coordinates}
-            />
-            <CountryInfoRow
-              icon={monedaIcon}
-              label="Moneda:"
-              value={currencies}
-            />
-            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
-              <span aria-hidden="true" />
-              <dt className="font-bold text-surface-icon-color">Subregión:</dt>
-              <dd className="wrap-break-word">
-                {country.subregion || 'No disponible'}
-              </dd>
+          <dl className="mt-2 grid gap-8 text-sm leading-6 sm:grid-cols-2">
+            <div>
+              <CountryInfoRow
+                label="Nombre nativo:"
+                value={nativeName}
+              />
+              <CountryInfoRow
+                icon={poblacionIcon}
+                label="Población:"
+                value={formatPopulation(country.population)}
+              />
+              <CountryInfoRow
+                icon={regionIcon}
+                label="Región:"
+                value={getRegionName(country.region)}
+              />
+              <CountryInfoRow
+                icon={regionIcon}
+                label="Subregión:"
+                value={subregion}
+              />
+              <CountryInfoRow
+                icon={capitalIcon}
+                label="Capital:"
+                value={getCapital(country)}
+              />
             </div>
-            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
-              <span aria-hidden="true" />
-              <dt className="font-bold text-surface-icon-color">Nombre nativo:</dt>
-              <dd className="wrap-break-word">{nativeName}</dd>
-            </div>
-            <div className="grid grid-cols-[40px_110px_minmax(0,1fr)] gap-2 py-2 text-sm sm:grid-cols-[40px_120px_minmax(0,1fr)]">
-              <span aria-hidden="true" />
-              <dt className="font-bold text-surface-icon-color">Dominio:</dt>
-              <dd className="wrap-break-word">{domains}</dd>
+            <div>
+              <CountryInfoRow
+                label="Dominio:"
+                value={domains}
+              />
+              <CountryInfoRow
+                icon={monedaIcon}
+                label="Moneda:"
+                value={currencies}
+              />
+              <CountryInfoRow
+                icon={idiomaIcon}
+                label="Idiomas:"
+                value={languages}
+              />
+              <CountryInfoRow
+                icon={areaIcon}
+                label="Área:"
+                value={area}
+              />
+              <CountryInfoRow
+                icon={coordenadasIcon}
+                label="Coordenadas:"
+                value={coordinates}
+              />
             </div>
           </dl>
 
@@ -207,26 +189,21 @@ function CountryDetailContent({
 export function CountryDetailPage(): JSX.Element {
   const { code } = useParams<keyof CountryRouteParams>();
   const { state, retry } = useCountryDetail(code);
+  const hasCode = Boolean(code?.trim());
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* [FEATURE: FAVORITES] START */}
       <div className="flex items-center justify-between">
-      {/* [FEATURE: FAVORITES] END */}
         <Link
           to="/"
           className="inline-flex min-h-11 items-center justify-center rounded-full bg-orange-500 px-8 py-2 font-roboto font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
         >
           ← Atrás
         </Link>
-        {/* [FEATURE: FAVORITES] START */}
         {state.status === 'success' && (
           <FavoriteButton code={code ?? ''} variant="button" />
         )}
-      {/* [FEATURE: FAVORITES] END */}
-      {/* [FEATURE: FAVORITES] START */}
       </div>
-      {/* [FEATURE: FAVORITES] END */}
 
       {state.status === 'loading' && (
         <p role="status" className="mt-12 font-roboto">
@@ -242,13 +219,22 @@ export function CountryDetailPage(): JSX.Element {
           <p role="alert" className="mt-3 text-texto-secondary">
             {state.message}
           </p>
-          <button
-            type="button"
-            onClick={retry}
-            className="mt-5 min-h-11 rounded-full bg-orange-500 px-6 py-2 font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4"
-          >
-            Reintentar
-          </button>
+          {hasCode ? (
+            <button
+              type="button"
+              onClick={retry}
+              className="mt-5 min-h-11 rounded-full bg-orange-500 px-6 py-2 font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              Reintentar
+            </button>
+          ) : (
+            <Link
+              to="/"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-orange-500 px-6 py-2 font-bold text-neutral-900 hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+            >
+              Volver al listado
+            </Link>
+          )}
         </section>
       )}
 

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
+import { fetchCountries } from '../api/countries';
 import type { Country } from '../types/country';
-import { fetchCountries } from '../data/fetchCountries';
 
 export type AppState =
   | { status: 'loading' }
@@ -17,17 +17,16 @@ export function useCountries(): UseCountriesReturn {
   const [attempt, setAttempt] = useState<number>(0);
 
   useEffect(() => {
-    const controller = new AbortController();
-    let cancelled = false;
+    let active = true;
 
-    fetchCountries(controller.signal)
+    fetchCountries()
       .then((countries) => {
-        if (!cancelled) {
+        if (active) {
           setState({ status: 'success', data: countries });
         }
       })
       .catch((error: unknown) => {
-        if (!cancelled) {
+        if (active) {
           const message = error instanceof Error
             ? error.message
             : 'No se pudieron cargar los países.';
@@ -36,8 +35,7 @@ export function useCountries(): UseCountriesReturn {
       });
 
     return () => {
-      cancelled = true;
-      controller.abort();
+      active = false;
     };
   }, [attempt]);
 

@@ -30,14 +30,12 @@ export function useCountryDetail(
   useEffect(() => {
     if (!normalizedCode) return;
 
-    const controller = new AbortController();
     let active = true;
 
     async function loadDetail(): Promise<void> {
       try {
         const country: CountryDetail = await fetchCountryByCode(
           normalizedCode,
-          controller.signal,
         );
 
         if (active) {
@@ -66,7 +64,6 @@ export function useCountryDetail(
 
     return () => {
       active = false;
-      controller.abort();
     };
   }, [normalizedCode, attempt]);
 
