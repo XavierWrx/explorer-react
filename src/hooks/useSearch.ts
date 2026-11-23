@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import type { Country } from '../types/country';
 import { filterCountries } from '../utils/filter';
 
-export const INITIAL_VISIBLE_COUNTRIES = 8;
-
 export interface UseSearchReturn {
   query: string;
   setQuery: (value: string) => void;
@@ -38,9 +36,6 @@ export function useSearch(countries: Country[]): UseSearchReturn {
     debouncedQuery,
     debouncedRegion,
   );
-  const visibleCountries = hasActiveFilters
-    ? filteredCountries
-    : filteredCountries.slice(0, INITIAL_VISIBLE_COUNTRIES);
 
   const clearFilters = () => {
     setQuery('');
@@ -52,7 +47,7 @@ export function useSearch(countries: Country[]): UseSearchReturn {
     setQuery,
     region,
     setRegion,
-    visibleCountries,
+    visibleCountries: filteredCountries,
     clearFilters,
     hasActiveFilters,
   };

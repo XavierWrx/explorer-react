@@ -6,16 +6,13 @@ import poblacionIcon from "../../assets/Poblacion.svg";
 import regionIcon from "../../assets/Region.svg";
 import capitalIcon from "../../assets/Capital.svg";
 import placeholderIcon from "../../assets/Mosaico.svg";
-// [FEATURE: FAVORITES] START
 import { FavoriteButton } from '../atoms/FavoriteButton';
-// [FEATURE: FAVORITES] END
 
 interface CountryCardProps {
   country: Country;
-  onSelect: (code: string) => void;
 }
 
-export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Element {
+export function CountryCard({ country }: CountryCardProps): JSX.Element {
   const name = country.names?.common || "Desconocido";
   const code = country.codes?.alpha_2 || "N/A";
   const flagUrl = country.flag?.url_svg || placeholderIcon;
@@ -31,11 +28,9 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
 
   return (
     <article className="bg-surface-background rounded-rd-sm border-2 border-brand-accent p-6 shadow-sm flex flex-col justify-between w-full h-full hover:shadow-md transition-shadow">
-      {/* [FEATURE: FAVORITES] START */}
       <div className="flex justify-end -mb-8">
         <FavoriteButton code={code} variant="icon" />
       </div>
-      {/* [FEATURE: FAVORITES] END */}
       
       <h2 className="font-roboto font-black text-center text-lg md:text-xl text-surface-icon-color uppercase mb-4 tracking-wide">
         {name}
@@ -78,7 +73,6 @@ export function CountryCard({ country, onSelect }: CountryCardProps): JSX.Elemen
 
       <Link
         to={`/country/${encodeURIComponent(code)}`}
-        onClick={() => onSelect(code)}
         className="w-full bg-brand-button-default hover:bg-brand-button-hover active:scale-95 text-surface-icon-color font-roboto font-bold h-11 px-4 rounded-rd-sm text-xs transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary cursor-pointer uppercase mt-auto flex items-center justify-center"
       >
         Más información

@@ -1,4 +1,5 @@
 import type { JSX, ChangeEvent } from "react";
+import searchIcon from "../../assets/Buscar.svg";
 
 interface SearchBarProps {
   query: string;
@@ -8,7 +9,7 @@ interface SearchBarProps {
 export function SearchBar({ query, onSearch }: SearchBarProps): JSX.Element {
   return (
     <div className="w-full relative">
-      <img src="/src/assets/Buscar.svg" alt="" className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2" />
+      <img src={searchIcon} alt="" className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2" />
       <label htmlFor="search-input" className="sr-only">Buscar país</label>
       <input
         id="search-input"

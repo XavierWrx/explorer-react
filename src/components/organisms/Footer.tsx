@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Link } from "react-router-dom";
+import mosaicIcon from "../../assets/Mosaico.svg";
 
 export function Footer(): JSX.Element {
   return (
@@ -9,7 +10,7 @@ export function Footer(): JSX.Element {
           <Link to="/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">Explorer App</Link>
           <Link to="/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">Redes Sociales</Link>
         </div>
-        <img src="/src/assets/Mosaico.svg" alt="Logo Footer" className="w-8 h-8 object-contain" />
+        <img src={mosaicIcon} alt="Logo Footer" className="w-8 h-8 object-contain" />
         <div className="flex flex-col gap-1 items-center md:items-end">
           <Link to="/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent">Más información</Link>
         </div>
