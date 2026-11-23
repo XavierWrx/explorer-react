@@ -1,5 +1,3 @@
-// src/utils/format.ts
-
 import type { Country } from '../types/country';
 
 const populationFormatter = new Intl.NumberFormat('es-SV');

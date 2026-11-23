@@ -1,9 +1,5 @@
 import type { Country } from "../types/country";
 
-// ======================================================
-// FILTRAR PAÍSES POR NOMBRE Y REGIÓN
-// ======================================================
-
 export function filterCountries(
     countries: Country[],
     query: string,

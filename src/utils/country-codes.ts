@@ -1,4 +1,3 @@
-// country-codes.ts — equivalencias para las fronteras del JSON del curso.
 // Tabla ISO 3166-1; UNK -> XK conserva la convención del dataset para Kosovo.
 const borderCodes: Readonly<Record<string, string | undefined>> = {
   AFG: "AF", AGO: "AO", ALB: "AL", AND: "AD", ARE: "AE",

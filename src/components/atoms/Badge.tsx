@@ -1,4 +1,3 @@
-// Badge.tsx — presenta la región como una etiqueta reutilizable.
 import type { JSX } from "react";
 
 interface BadgeProps {
